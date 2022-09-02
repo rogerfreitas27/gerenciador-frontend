@@ -1,0 +1,138 @@
+<app-menu></app-menu>
+
+<div class="container">
+
+  <div class="card text-center">
+    <div class="card-header">
+      Cadastro de Endereço
+    </div>
+    <div class="card-body">
+
+
+
+      <form [formGroup]="formEnderecoDto" (ngSubmit)="onSubmit()">
+        <input type="hidden" id="id" name="id" formControlName="idPessoa">
+
+        <div class="row">
+          <div class="col-md-4">
+            <label for="cep">CEP:</label>
+            <input type="text" formControlName="cep" class="form-control" placeholder="Cep">
+
+            <div *ngIf="cep.invalid && (cep.dirty || cep.touched)" class="alert alert-danger">
+              <div class="text-danger" *ngIf="cep.errors?.required">
+                Campo cep é obrigatorio
+              </div>
+
+              <div *ngIf="cep.errors?.minlength" class="alert alert-danger">
+                Minimo de 8 caracteres
+              </div>
+
+              <div *ngIf="cep.errors?.maxlength" class="alert alert-danger">
+                Maximo de 8 caracteres
+              </div>
+
+              <div *ngIf="cep.errors?.pattern" class="alert alert-danger">
+                Apenas numeros
+              </div>
+            </div>
+
+          </div>
+          <div class="col-md-8">
+            <label for="cidade">CIDADE:</label>
+            <input type="text" class="form-control" formControlName="cidade" placeholder="Cidade">
+
+            <div *ngIf="cidade.invalid && (cidade.dirty || cidade.touched)" class="alert alert-danger">
+              <div class="text-danger" *ngIf="cidade.errors?.required">
+                Campo cidade é obrigatorio
+              </div>
+
+              <div *ngIf="cidade.errors?.minlength" class="alert alert-danger">
+                Minimo de 3 caracteres
+              </div>
+
+              <div *ngIf="cidade.errors?.maxlength" class="alert alert-danger">
+                Maximo de 255 caracteres
+              </div>
+
+
+            </div>
+
+          </div>
+        </div>
+        <br>
+
+
+        <div class="row">
+          <div class="col-md-8">
+            <label for="logradouro">LOGRADOURO:</label>
+            <input type="text" class="form-control" formControlName="logradouro" placeholder="Logradouro">
+
+            <div *ngIf="logradouro.invalid && (logradouro.dirty || logradouro.touched)" class="alert alert-danger">
+              <div class="text-danger" *ngIf="logradouro.errors?.required">
+                Campo logradouro é obrigatorio
+              </div>
+
+              <div *ngIf="logradouro.errors?.minlength" class="alert alert-danger">
+                Minimo de 3 caracteres
+              </div>
+
+              <div *ngIf="logradouro.errors?.maxlength" class="alert alert-danger">
+                Maximo de 255 caracteres
+              </div>
+
+
+            </div>
+
+          </div>
+          <div class="col-md-4">
+            <label for="numero">NUMERO:</label>
+            <input type="text" formControlName="numero" class="form-control" placeholder="Numero">
+          </div>
+        </div>
+        <br>
+
+
+        <div class="row">
+          <div class="col-md-4">
+            <label for="principal">PRIORIDADE:</label>
+            <select formControlName="principal" class="form-control form-control-lg">
+              <option value="false">Normal</option>
+              <option value="true">Principal</option>
+            </select>
+
+            <div *ngIf="principal.invalid && (principal.dirty || principal.touched)" class="alert alert-danger">
+              <div class="text-danger" *ngIf="principal.errors?.required">
+                Campo tipo de endereço é obrigatorio
+              </div>
+
+
+
+
+
+
+            </div>
+          </div>
+        </div>
+        <br>
+
+        <div class=text-right>
+          <input type="button" [disabled]="formEnderecoDto.invalid" value="Salvar" class="btn btn-danger">
+        </div>
+
+
+
+
+
+
+
+      </form>
+
+
+    </div>
+
+
+
+
+
+  </div>
+</div>

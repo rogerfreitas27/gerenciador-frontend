@@ -1,0 +1,77 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" [routerLink]="'.'">
+      <img src="./assets/imagem.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      Api de pessoas
+    </a>
+
+
+
+
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+      &#9776;
+    </button>
+
+
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+
+          <a class="nav-link" routerLink="/pessoa" routerLinkActive="selected"
+            (click)="isMenuCollapsed = true">Pessoas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/form-pessoa" routerLinkActive="selected"
+            (click)="isMenuCollapsed = true">Nova Pessoa</a>
+        </li>
+
+      </ul>
+
+
+
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+
+        <div class=text-right>
+          <button type="button" class="btn btn-danger" (click)="atalho(content)">
+            Atalho
+          </button>
+        </div>
+
+
+
+
+
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+<div (keyup)="onKeydownCadastra($event)"></div>
+<div (keyup)="onKeydownLista($event)"></div>
+
+
+
+
+<ng-template #content let-modal>
+
+  <div class="modal-body">
+    <h2>Atalhos</h2>
+    <h3>
+      <p>Listar Pessoas</p>
+    </h3>
+    SHIFT + L
+    <br>
+    <h3>
+      <p>Cadastrar Pessoa</p>
+    </h3>
+    SHIFT + N
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Fechar</button>
+  </div>
+</ng-template>

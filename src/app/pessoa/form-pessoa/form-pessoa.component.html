@@ -1,0 +1,512 @@
+<app-menu></app-menu>
+
+
+<div class="container">
+  <br>
+  <br>
+  <div *ngIf="exibeBotaoPdf">
+    <div class="form-group">
+
+      <div class=text-right>
+        <button type="button" class="btn btn-info" (click)="gerarRelatorioEnderecosPessoa(content)">
+          PDF
+        </button>
+      </div>
+
+
+
+
+    </div>
+  </div>
+
+
+  <br>
+
+  <div class="card text-center">
+    <div class="card-header">
+      {{titulo}}
+
+      <div *ngIf="spinner">
+        <br>
+        <app-spinner></app-spinner>
+      </div>
+    </div>
+
+
+    <div class="card-body">
+      <div *ngIf="mensagem_erro">
+        <ngb-alert [dismissible]="true" (closed)="mensagem_erro = ''" type='danger'>
+          <strong>{{mensagem_erro}}</strong>
+        </ngb-alert>
+      </div>
+
+
+      <form [formGroup]="formPessoa" (ngSubmit)="onSubmit()">
+        <div *ngIf="idPessoa !=null  ; else criarPessoa">
+
+          <!-- Pessoa -->
+          <input type="hidden" id="id" name="id" formControlName="id">
+          <div class="row">
+            <div class="col-md-8">
+              <label for="nome">Nome:</label>
+              <input type="text" formControlName="nome" class="form-control" placeholder="Nome">
+
+              <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="alert alert-danger">
+
+                <div *ngIf="nome.errors?.required" class="alert alert-danger">
+                  Campo nome é obrigatório.
+                </div>
+
+                <div *ngIf="nome.errors?.minlength" class="alert alert-danger">
+                  Minimo de 3 caracteres
+                </div>
+
+                <div *ngIf="nome.errors?.maxlength" class="alert alert-danger">
+                  Maximo de 255 caracteres
+                </div>
+              </div>
+
+
+
+            </div>
+            <div class="col-md-4">
+              <label for="nascimento">Nascimento:</label>
+              <input type="date" formControlName="dataNascimento" class="form-control" placeholder="Last name">
+
+              <div *ngIf="dataNascimento.invalid && (dataNascimento.dirty || dataNascimento.touched)"
+                class="alert alert-danger">
+
+                <div *ngIf="dataNascimento.errors?.required" class="alert alert-danger">
+                  Campo data de nascimento é obrigatório.
+                </div>
+
+
+              </div>
+
+            </div>
+          </div>
+          <br>
+
+          <!-- Endereco -->
+          <div formArrayName="endereco" *ngFor="let item of endereco.controls; let i = index;">
+
+            <div [formGroupName]="i">
+
+              <fieldset class="border p-2">
+
+                <legend class="w-auto">Endereço </legend>
+                <input type="hidden" id="idEndereco" name="id" formControlName="idEndereco">
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="cep">CEP:</label>
+                    <input type="text" formControlName="cep" class="form-control" placeholder="Cep">
+
+                    <div
+                      *ngIf="endereco.controls[i].get('cep')!.invalid && (endereco.controls[i].get('cep')!.dirty || endereco.controls[i].get('cep')!.touched)"
+                      class="alert alert-danger">
+                      <div class="text-danger" *ngIf="endereco.controls[i].get('cep')!.errors?.required">
+                        Campo cep é obrigatorio
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('cep')!.errors?.minlength" class="alert alert-danger">
+                        Minimo de 8 caracteres
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('cep')!.errors?.maxlength" class="alert alert-danger">
+                        Maximo de 8 caracteres
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('cep')!.errors?.pattern" class="alert alert-danger">
+                        Apenas numeros
+                      </div>
+                    </div>
+
+
+
+
+
+
+                  </div>
+                  <div class="col-md-8">
+                    <label for="cidade">CIDADE:</label>
+                    <input type="text" formControlName="cidade" class="form-control" placeholder="Cidade">
+
+                    <div
+                      *ngIf="endereco.controls[i].get('cidade')!.invalid && (endereco.controls[i].get('cidade')!.dirty || endereco.controls[i].get('cidade')!.touched)"
+                      class="alert alert-danger">
+                      <div class="text-danger" *ngIf="endereco.controls[i].get('cidade')!.errors?.required">
+                        Campo cidade é obrigatorio
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('cidade')!.errors?.minlength" class="alert alert-danger">
+                        Minimo de 3 caracteres
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('cidade')!.errors?.maxlength" class="alert alert-danger">
+                        Maximo de 255 caracteres
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+                <br>
+
+
+                <div class="row">
+                  <div class="col-md-8">
+                    <label for="logradouro">LOGRADOURO:</label>
+                    <input type="text" formControlName="logradouro" class="form-control" placeholder="Logradouro">
+
+
+                    <div
+                      *ngIf="endereco.controls[i].get('logradouro')!.invalid && (endereco.controls[i].get('logradouro')!.dirty || endereco.controls[i].get('logradouro')!.touched)"
+                      class="alert alert-danger">
+                      <div class="text-danger" *ngIf="endereco.controls[i].get('logradouro')!.errors?.required">
+                        Campo logradouro é obrigatorio
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('logradouro')!.errors?.minlength" class="alert alert-danger">
+                        Minimo de 3 caracteres
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('logradouro')!.errors?.maxlength" class="alert alert-danger">
+                        Maximo de 255 caracteres
+                      </div>
+                    </div>
+
+
+                  </div>
+                  <div class="col-md-4">
+                    <label for="numero">NUMERO:</label>
+                    <input type="text" formControlName="numero" class="form-control" placeholder="Numero">
+                  </div>
+                </div>
+                <br>
+
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="principal">PRIORIDADE:</label>
+                    <select formControlName="principal" class="form-control form-control-lg">
+                      <option value="false">Normal</option>
+                      <option value="true">Principal</option>
+                    </select>
+                  </div>
+                </div>
+                <br>
+
+
+
+
+
+
+              </fieldset>
+
+
+
+              <!-- Fim do array -->
+            </div>
+
+
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+
+
+
+            </div>
+
+
+          </div>
+          <div class="col-md-8">
+            <button type="submit" [disabled]="formPessoa.invalid" id="botao" type="submit"
+              class="btn btn-success">Salvar</button>
+
+          </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <!---->
+
+
+
+
+        <ng-template #criarPessoa>
+          <input type="hidden" id="id" name="id" formControlName="id">
+
+          <div class="row">
+            <div class="col-md-8">
+              <label for="nome">Nome:</label>
+              <input type="text" formControlName="nome" class="form-control" placeholder="Nome">
+
+              <div *ngIf="nome.invalid && (nome.dirty || nome.touched)" class="alert alert-danger">
+
+                <div *ngIf="nome.errors?.required" class="alert alert-danger">
+                  Campo nome é obrigatório.
+                </div>
+
+                <div *ngIf="nome.errors?.minlength" class="alert alert-danger">
+                  Minimo de 3 caracteres
+                </div>
+
+                <div *ngIf="nome.errors?.maxlength" class="alert alert-danger">
+                  Maximo de 255 caracteres
+                </div>
+              </div>
+
+
+
+            </div>
+            <div class="col-md-4">
+              <label for="nascimento">Nascimento:</label>
+              <input type="date" formControlName="dataNascimento" class="form-control" placeholder="Last name">
+
+              <div *ngIf="dataNascimento.invalid && (dataNascimento.dirty || dataNascimento.touched)"
+                class="alert alert-danger">
+
+                <div *ngIf="dataNascimento.errors?.required" class="alert alert-danger">
+                  Campo data de nascimento é obrigatório.
+                </div>
+
+
+              </div>
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+          <!-- Endereco -->
+          <div formArrayName="endereco" *ngFor="let item of endereco.controls; let i = index;">
+            <!--<div formArrayName="endereco" *ngFor="let endereco of endereco.controls; let i = index">-->
+            <div [formGroupName]="i">
+
+              <fieldset class="border p-2">
+
+                <legend class="w-auto">Endereço</legend>
+                <input type="hidden" id="idEndereco" formControlName="idEndereco">
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="cep">CEP:</label>
+                    <input type="text" formControlName="cep" class="form-control" placeholder="Cep">
+
+                    <div
+                      *ngIf="endereco.controls[i].get('cep')!.invalid && (endereco.controls[i].get('cep')!.dirty || endereco.controls[i].get('cep')!.touched)"
+                      class="alert alert-danger">
+                      <div class="text-danger" *ngIf="endereco.controls[i].get('cep')!.errors?.required">
+                        Campo cep é obrigatorio
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('cep')!.errors?.minlength" class="alert alert-danger">
+                        Minimo de 8 caracteres
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('cep')!.errors?.maxlength" class="alert alert-danger">
+                        Maximo de 8 caracteres
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('cep')!.errors?.pattern" class="alert alert-danger">
+                        Apenas numeros
+                      </div>
+                    </div>
+
+
+
+
+
+
+                  </div>
+                  <div class="col-md-8">
+                    <label for="cidade">CIDADE:</label>
+                    <input type="text" formControlName="cidade" class="form-control" placeholder="Cidade">
+
+                    <div
+                      *ngIf="endereco.controls[i].get('cidade')!.invalid && (endereco.controls[i].get('cidade')!.dirty || endereco.controls[i].get('cidade')!.touched)"
+                      class="alert alert-danger">
+                      <div class="text-danger" *ngIf="endereco.controls[i].get('cidade')!.errors?.required">
+                        Campo cidade é obrigatorio
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('cidade')!.errors?.minlength" class="alert alert-danger">
+                        Minimo de 3 caracteres
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('cidade')!.errors?.maxlength" class="alert alert-danger">
+                        Maximo de 255 caracteres
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+                <br>
+
+
+                <div class="row">
+                  <div class="col-md-8">
+                    <label for="logradouro">LOGRADOURO:</label>
+                    <input type="text" formControlName="logradouro" class="form-control" placeholder="Logradouro">
+
+
+                    <div
+                      *ngIf="endereco.controls[i].get('logradouro')!.invalid && (endereco.controls[i].get('logradouro')!.dirty || endereco.controls[i].get('logradouro')!.touched)"
+                      class="alert alert-danger">
+                      <div class="text-danger" *ngIf="endereco.controls[i].get('logradouro')!.errors?.required">
+                        Campo logradouro é obrigatorio
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('logradouro')!.errors?.minlength" class="alert alert-danger">
+                        Minimo de 3 caracteres
+                      </div>
+
+                      <div *ngIf="endereco.controls[i].get('logradouro')!.errors?.maxlength" class="alert alert-danger">
+                        Maximo de 255 caracteres
+                      </div>
+                    </div>
+
+
+                  </div>
+                  <div class="col-md-4">
+                    <label for="numero">NUMERO:</label>
+                    <input type="text" formControlName="numero" class="form-control" placeholder="Numero">
+                  </div>
+                </div>
+                <br>
+
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="principal">PRIORIDADE:</label>
+                    <select formControlName="principal" class="form-control form-control-lg">
+                      <option value="false">Normal</option>
+                      <option value="true">Principal</option>
+                    </select>
+                  </div>
+                </div>
+                <br>
+
+
+
+
+
+
+              </fieldset>
+
+            </div>
+
+            <br>
+
+
+
+
+
+
+
+
+            <div class="row">
+              <div class="col-md-4">
+
+
+                <input type="button" (click)="adicionaEndereco()" value="+ Endereço" class="btn btn-primary">
+              </div>
+
+
+
+              <div class="col-md-8">
+
+
+                <div *ngIf="i > 0">
+
+                  <input type="button" (click)="removerEndereco(i)" value="- Endereço" class="btn btn-danger">
+
+
+                </div>
+              </div>
+
+
+            </div>
+
+
+
+            <!-- Fim do for -->
+
+
+          </div>
+
+          <br>
+
+
+          <div class="rows">
+            <div class="col-md-12">
+              <button type="submit" [disabled]="formPessoa.invalid" type="submit"
+                class="btn btn-success">Salvar</button>
+
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </ng-template>
+      </form>
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+    <!-- Modal -->
+    <ng-template #content let-modal>
+
+      <div class="modal-body">
+        <div *ngIf="spinnerRelatorio">
+          <app-spinner></app-spinner>
+        </div>
+        <iFrame id="pdf" width="100% " height="500" frameborder="0" allowtransparency="true">
+        </iFrame>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Fechar</button>
+      </div>
+    </ng-template>
+
+
+
+
+
+  </div>

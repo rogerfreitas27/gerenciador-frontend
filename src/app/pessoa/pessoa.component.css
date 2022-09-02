@@ -1,0 +1,9 @@
+#img-fundo{
+    background-image: url("https://img.freepik.com/fotos-gratis/bela-foto-de-baixo-angulo-de-uma-floresta-sob-um-ceu-azul-estrelado_181624-9304.jpg?t=st=1652814920~exp=1652815520~hmac=8d785d26feb41818d8c00a3e96ea7b2ee27afbcdabc890756599c20f67344bb3&w=1200"); ;
+   /* position: relative;
+    height: 100vh;
+    width: 100vw; */
+    background-size: cover; 
+    background-attachment: fixed;
+	 margin-top: 20px;
+}
